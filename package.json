@@ -1,0 +1,39 @@
+{
+  "name": "@ukhomeoffice/asl-functional-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "asl-test": "bin/asl-test"
+  },
+  "scripts": {
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UKHomeOffice/asl-functional-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UKHomeOffice/asl-functional-testing/issues"
+  },
+  "homepage": "https://github.com/UKHomeOffice/asl-functional-testing#readme",
+  "dependencies": {
+    "aws-sdk": "^2.238.1",
+    "funkie": "0.0.6",
+    "funkie-chromedriver": "0.0.1",
+    "lodash": "^4.17.10",
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "wdio": "^2.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-lennym": "^2.0.1"
+  }
+}
