@@ -3,6 +3,7 @@
 const path = require('path');
 const cp = require('child_process');
 const { omit } = require('lodash');
+const which = require('witch');
 const args = require('minimist')(process.argv.slice(2));
 const CONFIG_PATH = path.resolve(process.cwd(), args._[0] || '.');
 
@@ -11,7 +12,7 @@ const wdioargs = Object.keys(omit(args, '_')).reduce((arr, key) => {
   return arr.concat([`--${key}`, args[key]]);
 }, [ path.resolve(__dirname, '../config') ]);
 
-cp.spawn('wdio', wdioargs, {
+cp.spawn(which('webdriverio', 'wdio'), wdioargs, {
   cwd: process.cwd(),
   env: Object.assign(process.env, {
     CONFIG_PATH
