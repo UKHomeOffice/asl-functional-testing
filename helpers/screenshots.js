@@ -50,8 +50,8 @@ module.exports = settings => {
     browser.withUser(settings.screenshots.user);
     const promises = settings.screenshots.urls.map(u => {
       browser.url(u);
-      const data = browser.screenshot();
-      return saveScreenshot(data.value, u);
+      const data = browser.saveDocumentScreenshot();
+      return saveScreenshot(data, u);
     });
     return Promise.all(promises);
   };

@@ -18,5 +18,5 @@ cp.spawn(which('webdriverio', 'wdio'), wdioargs, {
     CONFIG_PATH
   }),
   stdio: 'inherit'
-});
+}).on('exit', code => process.exit(code));
 
