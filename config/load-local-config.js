@@ -19,6 +19,10 @@ module.exports = (env, defaults) => {
     return config;
   }
 
+  if (typeof local === 'function') {
+    local = local(env);
+  }
+
   if (local.urls && local.urls[env]) {
     config.baseUrl = local.urls[env];
   } else {
