@@ -10,8 +10,10 @@ pipeline:
   publish:
     image: plugins/npm
     secrets:
+      - npm_username
       - npm_token
       - npm_email
+    username: ${NPM_USERNAME}
     token: ${NPM_TOKEN}
     email: ${NPM_EMAIL}
     when:
