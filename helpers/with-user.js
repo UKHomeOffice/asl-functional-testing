@@ -1,4 +1,5 @@
 module.exports = settings => browser => username => {
+  username = username || settings.defaultUser;
   browser.url('/logout');
   try {
     browser.waitForVisible('[name=username]', 10000);
