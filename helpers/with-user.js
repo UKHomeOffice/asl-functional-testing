@@ -13,5 +13,5 @@ module.exports = settings => browser => username => {
   }
   browser.setValue('[name=password]', settings.users[username]);
   browser.click('[name=login]');
-  browser.waitForVisible('h1*=Hello', 20000);
+  browser.waitForVisible('h1*=Hello', 60000);
 };
