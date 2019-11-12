@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 module.exports = settings => browser => username => {
   username = username || settings.defaultUser;
   browser.url('/logout');
@@ -13,5 +15,10 @@ module.exports = settings => browser => username => {
   }
   browser.setValue('[name=password]', settings.users[username]);
   browser.click('[name=login]');
+  const errorMessage = browser.$('.alert-error');
+  if (errorMessage) {
+    const errorText = errorMessage.getText();
+    assert.fail(`Login error found: ${errorText}`);
+  }
   browser.waitForVisible('h1*=Hello', 60000);
 };
