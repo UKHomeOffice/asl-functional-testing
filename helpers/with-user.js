@@ -15,6 +15,6 @@ module.exports = settings => browser => username => {
   }
   browser.setValue('[name=password]', settings.users[username]);
   browser.click('[name=login]');
-  assert.ok(!browser.$('span=Invalid username or password.').isExisting(), 'Failed authentication');
+  assert.ok(!browser.$('.alert-error').isExisting(), 'Failed authentication');
   browser.waitForVisible('h1*=Hello', 60000);
 };
