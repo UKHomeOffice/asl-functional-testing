@@ -15,9 +15,9 @@ module.exports = settings => browser => username => {
   }
   browser.setValue('[name=password]', settings.users[username]);
   browser.click('[name=login]');
-  const errorMessage = browser.$('.alert-error');
-  if (errorMessage) {
-    const errorText = errorMessage.getText();
+  const errorMessage = browser.$$('.alert-error');
+  if (errorMessage.length) {
+    const errorText = errorMessage[0].getText();
     assert.fail(`Login error found: ${errorText}`);
   }
   try {
