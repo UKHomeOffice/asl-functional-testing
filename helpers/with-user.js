@@ -22,7 +22,7 @@ module.exports = settings => browser => async username => {
       const errorText = errorMessage[0].getText();
       assert.fail(`Login error found: ${errorText}`);
     }
-    return await browser.waitForVisible('h1*=Hello', 10000);
+    return browser.waitForVisible('h1*=Hello', 10000);
   };
 
   const tryLogin = async (count = 0) => {
@@ -30,13 +30,13 @@ module.exports = settings => browser => async username => {
       throw new Error('Login failed 3 times');
     }
     try {
-      return await doLogin();
+      return doLogin();
     } catch (e) {
       console.log(`Login failed, retrying (${count + 1}).`);
-      return await tryLogin(count + 1);
+      return tryLogin(count + 1);
     }
   };
 
-  return await tryLogin(0);
+  return tryLogin(0);
 
 };
