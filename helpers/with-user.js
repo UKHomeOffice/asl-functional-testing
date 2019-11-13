@@ -21,7 +21,7 @@ module.exports = settings => browser => username => {
     assert.fail(`Login error found: ${errorText}`);
   }
   try {
-    browser.waitForVisible('h1*=Hello', 10000);
+    browser.waitForVisible('h1*=Hello', 60000);
   } catch (e) {
     browser.url('/');
     browser.waitForVisible('h1*=Hello', 5000);
