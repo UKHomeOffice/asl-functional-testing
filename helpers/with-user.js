@@ -20,5 +20,10 @@ module.exports = settings => browser => username => {
     const errorText = errorMessage.getText();
     assert.fail(`Login error found: ${errorText}`);
   }
-  browser.waitForVisible('h1*=Hello', 60000);
+  try {
+    browser.waitForVisible('h1*=Hello', 10000);
+  } catch (e) {
+    browser.url('/');
+    browser.waitForVisible('h1*=Hello', 5000);
+  }
 };
