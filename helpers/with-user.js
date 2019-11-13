@@ -1,29 +1,42 @@
 const assert = require('assert');
 
-module.exports = settings => browser => username => {
+module.exports = settings => browser => async username => {
   username = username || settings.defaultUser;
-  browser.url('/logout');
-  try {
-    browser.waitForVisible('[name=username]', 10000);
-  } catch (e) {
-    browser.refresh();
-    browser.waitForVisible('[name=username]', 10000);
-  }
-  browser.setValue('[name=username]', username);
-  if (!settings.users[username]) {
-    throw new Error(`Could not find user: ${username}`);
-  }
-  browser.setValue('[name=password]', settings.users[username]);
-  browser.click('[name=login]');
-  const errorMessage = browser.$$('.alert-error');
-  if (errorMessage.length) {
-    const errorText = errorMessage[0].getText();
-    assert.fail(`Login error found: ${errorText}`);
-  }
-  try {
-    browser.waitForVisible('h1*=Hello', 60000);
-  } catch (e) {
-    browser.url('/');
-    browser.waitForVisible('h1*=Hello', 5000);
-  }
+
+  const doLogin = async () => {
+    await browser.url('/logout');
+    try {
+      await browser.waitForVisible('[name=username]', 10000);
+    } catch (e) {
+      await browser.refresh();
+      await browser.waitForVisible('[name=username]', 10000);
+    }
+    await browser.setValue('[name=username]', username);
+    if (!settings.users[username]) {
+      throw new Error(`Could not find user: ${username}`);
+    }
+    await browser.setValue('[name=password]', settings.users[username]);
+    await browser.click('[name=login]');
+    const errorMessage = await browser.$$('.alert-error');
+    if (errorMessage.length) {
+      const errorText = errorMessage[0].getText();
+      assert.fail(`Login error found: ${errorText}`);
+    }
+    return await browser.waitForVisible('h1*=Hello', 10000);
+  };
+
+  const tryLogin = async (count = 0) => {
+    if (count === 3) {
+      throw new Error('Login failed 3 times');
+    }
+    try {
+      return await doLogin();
+    } catch (e) {
+      console.log(`Login failed, retrying (${count + 1}).`);
+      return await tryLogin(count + 1);
+    }
+  };
+
+  return await tryLogin(0);
+
 };
