@@ -32,7 +32,7 @@ module.exports = settings => browser => async username => {
     try {
       await doLogin();
     } catch (e) {
-      console.error(`Login failed, retrying (${count + 1}).`);
+      console.error(`Login failed with message "${e.message}", retrying (${count + 1}).`);
       await tryLogin(count + 1);
     }
   };
