@@ -3,6 +3,6 @@ const local = require('./load-local-config');
 
 const env = process.env.DRONE_DEPLOY_TO || process.env.TEST_ENV || (process.env.CI ? 'dev' : 'local');
 
-const ci = process.env.CI ? { host: 'selenium' } : {};
+const selenium = process.env.SELENIUM_HOST || process.env.CI ? 'selenium' : 'localhost';
 
-exports.config = Object.assign(local(env, defaults), ci);
+exports.config = Object.assign(local(env, defaults), { host: selenium });
