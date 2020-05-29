@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/UKHomeOffice/asl-functional-testing#readme",
   "dependencies": {
-
+    "@wdio/reporter": "^6.1.14",
+    "chalk": "^4.0.0",
+    "pdf-parse": "^1.1.1",
+    "r2": "^2.0.1"
   },
   "publishConfig": {
     "access": "public"
