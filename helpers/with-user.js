@@ -1,42 +1,37 @@
 const assert = require('assert');
 
-module.exports = settings => browser => async username => {
+module.exports = settings => function (username) {
   username = username || settings.defaultUser;
 
-  const doLogin = async () => {
-    await browser.url('/logout');
-    try {
-      await browser.waitForVisible('[name=username]', 10000);
-    } catch (e) {
-      await browser.refresh();
-      await browser.waitForVisible('[name=username]', 10000);
-    }
-    await browser.setValue('[name=username]', username);
+  const doLogin = () => {
+    this.url('/logout');
+    this.$('[name=username]').waitForDisplayed({ timeout: 10000 });
+    this.$('[name=username]').setValue(username);
     if (!settings.users[username]) {
       throw new Error(`Could not find user: ${username}`);
     }
-    await browser.setValue('[name=password]', settings.users[username]);
-    await browser.click('[name=login]');
-    const errorMessage = await browser.$$('.alert-error');
+    this.$('[name=password]').setValue(settings.users[username]);
+    this.$('[name=login]').click();
+    const errorMessage = this.$$('.alert-error');
     if (errorMessage.length) {
       const errorText = errorMessage[0].getText();
       assert.fail(`Login error found: ${errorText}`);
     }
-    await browser.waitForVisible('h1*=Hello', 10000);
+    this.$('h1*=Hello').waitForDisplayed({ timeout: 10000 });
   };
 
-  const tryLogin = async (count = 0) => {
+  const tryLogin = (count = 0) => {
     if (count === 3) {
       throw new Error('Login failed 3 times');
     }
     try {
-      await doLogin();
+      doLogin();
     } catch (e) {
       console.error(`Login failed with message "${e.message}", retrying (${count + 1}).`);
-      await tryLogin(count + 1);
+      tryLogin(count + 1);
     }
   };
 
-  await tryLogin(0);
+  tryLogin(0);
 
 };
