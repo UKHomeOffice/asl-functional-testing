@@ -36,7 +36,7 @@ module.exports = settings => {
     config.mochaOpts.require = require.resolve('./sample');
   }
   config.before = (...args) => {
-    helpers(config, browser);
+    helpers(config);
     if (typeof settings.before === 'function') {
       settings.before(...args);
     }
