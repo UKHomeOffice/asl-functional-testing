@@ -12,9 +12,15 @@ class Reporter extends WDIOReporter {
   }
 
   onRunnerEnd(runner) {
-    if (runner.failures) {
-      // this.divider();
+    const slow = runner.config.slow || 30000;
+    if (runner.failures || (runner._duration > slow)) {
       this.write(chalk.blue.underline(runner.specs[0]));
+    }
+    if (runner._duration > slow) {
+      this.write(`${chalk.yellow('WARNING: ')} completed in ${Math.round(runner._duration / 1000)}s`);
+      this.write();
+    }
+    if (runner.failures) {
       this.write();
       Object.values(this.suites).forEach(suite => {
         [...suite.tests, ...suite.hooks].forEach(test => {

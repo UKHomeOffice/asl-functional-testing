@@ -21,5 +21,6 @@ module.exports = {
   reporters: [ Reporter ],
   mochaOpts: {
     timeout: 1800000
-  }
+  },
+  slow: 30000
 };
