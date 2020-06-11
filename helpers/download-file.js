@@ -8,25 +8,28 @@ const downloadFile = settings => function(fileType) {
   const downloadOptionsToggle = this.$('a=View download options');
   downloadOptionsToggle.click();
 
-  if (fileType === 'word') {
+  if (fileType !== 'pdf') {
     this.$('a=All downloads').click();
   }
 
   const downloadLinks = {
     pdf: 'a*=(.pdf)',
+    nts: 'a*=Non-technical summary',
     word: 'a*=(.docx)'
   };
 
   const mimeTypes = {
     pdf: 'application/pdf',
+    nts: 'application/pdf',
     word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   };
+
   const url = this.$(downloadLinks[fileType]).getProperty('href');
 
-  if (fileType === 'word') {
-    this.$('a*=Back').click();
-  } else {
+  if (fileType === 'pdf') {
     downloadOptionsToggle.click(); // close it again so we can call this function multiple times
+  } else {
+    this.$('a*=Back').click();
   }
 
   const allCookies = this.getCookies();
@@ -43,6 +46,7 @@ const downloadFile = settings => function(fileType) {
       .then(data => {
         switch (fileType) {
           case 'pdf':
+          case 'nts':
             return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
           case 'word':
             return data.toString('utf8');
