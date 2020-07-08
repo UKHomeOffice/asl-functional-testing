@@ -22,6 +22,7 @@ module.exports = settings => {
       'pharmaadmin': process.env.KEYCLOAK_PASSWORD,
       'email-change-before@example.com': process.env.KEYCLOAK_PASSWORD,
       'email-change-after@example.com': process.env.KEYCLOAK_PASSWORD,
+      'password-change@example.com': process.env.KEYCLOAK_PASSWORD,
       'asrusuper': process.env.KEYCLOAK_PASSWORD,
       'asruadmin': process.env.KEYCLOAK_PASSWORD,
       'asrusupport': process.env.KEYCLOAK_PASSWORD,
