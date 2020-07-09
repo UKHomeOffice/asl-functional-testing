@@ -5,31 +5,50 @@ const pdf = require('pdf-parse');
 const parsePDF = data => pdf(Buffer.from(data, 'binary'));
 
 const downloadFile = settings => function(fileType) {
-  const downloadOptionsToggle = this.$('a=View download options');
-  downloadOptionsToggle.click();
+  this.$('a=View download options').click();
 
-  if (fileType !== 'pdf') {
+  const fileTypeMapping = {
+    pdf: {
+      selector: 'a*=(.pdf)',
+      type: 'pdf',
+      followDownloadsLink: false
+    },
+    nts: {
+      selector: 'a*=Non-technical summary',
+      type: 'pdf'
+    },
+    word: {
+      selector: 'a*=(.docx)',
+      type: 'word'
+    }
+  };
+
+  if (typeof fileType === 'string') {
+    fileType = fileTypeMapping[fileType];
+  }
+
+  if (!fileType || !fileType.selector) {
+    throw new Error('selector must be defined');
+  }
+
+  if (fileType.followDownloadsLink !== false) {
     this.$('a=All downloads').click();
   }
 
-  const downloadLinks = {
-    pdf: 'a*=(.pdf)',
-    nts: 'a*=Non-technical summary',
-    word: 'a*=(.docx)'
-  };
+  // default type to 'pdf'
+  fileType.type = fileType.type || 'pdf';
 
   const mimeTypes = {
     pdf: 'application/pdf',
-    nts: 'application/pdf',
     word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   };
 
-  const url = this.$(downloadLinks[fileType]).getProperty('href');
+  const url = this.$(fileType.selector).getProperty('href');
 
-  if (fileType === 'pdf') {
-    downloadOptionsToggle.click(); // close it again so we can call this function multiple times
-  } else {
+  if (fileType.followDownloadsLink !== false) {
     this.$('a*=Back').click();
+  } else {
+    this.$('a*=Hide download options').click();
   }
 
   const allCookies = this.getCookies();
@@ -40,13 +59,12 @@ const downloadFile = settings => function(fileType) {
     return fetch(url, { headers }).response
       .then(res => {
         assert.equal(res.status, 200);
-        assert.equal(res.headers.get('content-type'), mimeTypes[fileType]);
+        assert.equal(res.headers.get('content-type'), mimeTypes[fileType.type]);
         return res.buffer();
       })
       .then(data => {
-        switch (fileType) {
+        switch (fileType.type) {
           case 'pdf':
-          case 'nts':
             return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
           case 'word':
             return data.toString('utf8');
