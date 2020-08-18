@@ -34,8 +34,11 @@ module.exports = settings => {
     baseUrl: settings.urls[env],
     ...settings
   };
+  if (config.flags) {
+    config.capabilities[0]['goog:chromeOptions'].args.push(...config.flags);
+  }
   if (config.headless) {
-    config.capabilities[0]['goog:chromeOptions'] = { args: ['--headless', '--disable-gpu'] };
+    config.capabilities[0]['goog:chromeOptions'].args.push('--headless', '--disable-gpu');
   }
   if (config.sample !== false) {
     config.mochaOpts.require = require.resolve('./sample');
