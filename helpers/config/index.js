@@ -21,6 +21,8 @@ module.exports = settings => {
       'piltransfer': process.env.KEYCLOAK_PASSWORD,
       'pharmaadmin': process.env.KEYCLOAK_PASSWORD,
       'marvellntco': process.env.KEYCLOAK_PASSWORD,
+      'trainingadmin': process.env.KEYCLOAK_PASSWORD,
+      'trainingntco': process.env.KEYCLOAK_PASSWORD,
       'email-change-before@example.com': process.env.KEYCLOAK_PASSWORD,
       'email-change-after@example.com': process.env.KEYCLOAK_PASSWORD,
       'password-change@example.com': process.env.KEYCLOAK_PASSWORD,
