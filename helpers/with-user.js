@@ -4,6 +4,7 @@ module.exports = settings => function (username) {
   username = username || settings.defaultUser;
 
   const doLogin = () => {
+    this.deleteCookies();
     this.url('/logout');
     this.$('[name=username]').waitForDisplayed({ timeout: 10000 });
     this.$('[name=username]').setValue(username);
