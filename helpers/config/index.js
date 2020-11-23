@@ -11,6 +11,7 @@ module.exports = settings => {
     ...defaults,
     defaultUser: 'holc',
     users: {
+      'unverified': process.env.KEYCLOAK_PASSWORD,
       'newuser': process.env.KEYCLOAK_PASSWORD,
       'holc': process.env.KEYCLOAK_PASSWORD,
       'ntco': process.env.KEYCLOAK_PASSWORD,
