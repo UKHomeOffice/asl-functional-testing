@@ -17,7 +17,7 @@ const downloadFile = settings => function(fileType) {
       type: 'pdf'
     },
     nts: {
-      selector: 'a*=Non-technical summary',
+      selector: 'a=Download non-technical summary as a PDF',
       type: 'pdf'
     },
     word: {
