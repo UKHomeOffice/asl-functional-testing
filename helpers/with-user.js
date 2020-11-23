@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-module.exports = settings => function (username) {
+module.exports = settings => function (username, selector = 'h1*=Hello') {
   username = username || settings.defaultUser;
 
   const doLogin = () => {
@@ -18,7 +18,7 @@ module.exports = settings => function (username) {
       const errorText = errorMessage[0].getText();
       assert.fail(`Login error found: ${errorText}`);
     }
-    this.$('h1*=Hello').waitForDisplayed({ timeout: 10000 });
+    this.$(selector).waitForDisplayed({ timeout: 10000 });
   };
 
   const tryLogin = (count = 0) => {
