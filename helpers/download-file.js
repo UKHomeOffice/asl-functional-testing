@@ -5,20 +5,23 @@ const pdf = require('pdf-parse');
 const parsePDF = data => pdf(Buffer.from(data, 'binary'));
 
 const downloadFile = settings => function(fileType) {
-  this.$('a=View download options').click();
+  const toggleLink = this.$('.document-header a.toggle-details');
+
+  if (toggleLink.isDisplayed() && toggleLink.getText().includes('View')) {
+    toggleLink.click();
+  }
 
   const fileTypeMapping = {
     pdf: {
-      selector: 'a*=(.pdf)',
-      type: 'pdf',
-      followDownloadsLink: false
+      selector: 'a*=PDF',
+      type: 'pdf'
     },
     nts: {
-      selector: 'a*=Non-technical summary',
+      selector: 'a=Download non-technical summary as a PDF',
       type: 'pdf'
     },
     word: {
-      selector: 'a*=(.docx)',
+      selector: 'a*=DOCX',
       type: 'word'
     }
   };
@@ -31,10 +34,6 @@ const downloadFile = settings => function(fileType) {
     throw new Error('selector must be defined');
   }
 
-  if (fileType.followDownloadsLink !== false) {
-    this.$('a=All downloads').click();
-  }
-
   // default type to 'pdf'
   fileType.type = fileType.type || 'pdf';
 
@@ -45,10 +44,8 @@ const downloadFile = settings => function(fileType) {
 
   const url = this.$(fileType.selector).getProperty('href');
 
-  if (fileType.followDownloadsLink !== false) {
-    this.$('a*=Back').click();
-  } else {
-    this.$('a*=Hide download options').click();
+  if (toggleLink.isDisplayed() && toggleLink.getText().includes('Hide')) {
+    toggleLink.click();
   }
 
   const allCookies = this.getCookies();
