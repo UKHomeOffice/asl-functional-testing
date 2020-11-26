@@ -18,4 +18,19 @@ module.exports = (config) => {
 
   // true as third argument extends element - i.e. `browser.$(selector).completeRichText('words')`
   browser.addCommand('completeRichText', completeRichText(config), true);
+  // add elaborate implementation of `.click()` to deal with floating elements that might block the click
+  browser.overwriteCommand('click', function (click) {
+    try {
+      return click();
+    } catch (e) {
+      // first attempt at clicking failed - try scrolling to view
+      this.scrollIntoView({ block: 'end' });
+      try {
+        return click();
+      } catch (e) {
+        // still can't click, use js to force it
+        return browser.execute(el => el.click(), this);
+      }
+    }
+  }, true);
 };
