@@ -5,6 +5,10 @@ const pdf = require('pdf-parse');
 const parsePDF = data => pdf(Buffer.from(data, 'binary'));
 
 const downloadFile = settings => function(fileType) {
+
+  // scroll window to top before trying to interact with download header
+  this.$('header[role="banner"]').scrollIntoView();
+
   const toggleLink = this.$('.document-header a.toggle-details');
 
   if (toggleLink.isDisplayed() && toggleLink.getText().includes('View')) {
