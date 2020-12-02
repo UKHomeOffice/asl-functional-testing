@@ -13,6 +13,7 @@ module.exports = settings => {
     defaultPassword: process.env.KEYCLOAK_PASSWORD,
     users: {
       'unverified': process.env.KEYCLOAK_PASSWORD,
+      'additionalavailability': process.env.KEYCLOAK_PASSWORD,
       'newuser': process.env.KEYCLOAK_PASSWORD,
       'holc': process.env.KEYCLOAK_PASSWORD,
       'ntco': process.env.KEYCLOAK_PASSWORD,
