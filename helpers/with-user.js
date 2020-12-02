@@ -9,9 +9,9 @@ module.exports = settings => function (username, selector = 'h1*=Hello') {
     this.$('[name=username]').waitForDisplayed({ timeout: 10000 });
     this.$('[name=username]').setValue(username);
     if (!settings.users[username]) {
-      throw new Error(`Could not find user: ${username}`);
+      console.error(`Could not find user: ${username}`);
     }
-    this.$('[name=password]').setValue(settings.users[username]);
+    this.$('[name=password]').setValue(settings.users[username] || settings.defaultPassword);
     this.$('[name=login]').click();
     const errorMessage = this.$$('.alert-error');
     if (errorMessage.length) {

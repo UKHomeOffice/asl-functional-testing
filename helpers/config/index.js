@@ -10,6 +10,7 @@ module.exports = settings => {
   const config = {
     ...defaults,
     defaultUser: 'holc',
+    defaultPassword: process.env.KEYCLOAK_PASSWORD,
     users: {
       'unverified': process.env.KEYCLOAK_PASSWORD,
       'newuser': process.env.KEYCLOAK_PASSWORD,
