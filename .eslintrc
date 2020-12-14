@@ -1,2 +1,5 @@
 extends:
   - lennym
+
+globals:
+  browser: readonly
