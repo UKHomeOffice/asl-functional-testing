@@ -10,7 +10,7 @@ module.exports = settings => function (name, values = []) {
 
   values.map((value, i) => {
     if (!selects[i]) {
-      el.$('button*=Add another').click();
+      el.$('button*=Add').click();
       selects = el.$$(`select[name=${name}]`);
     }
     selects[i].selectByVisibleText(value);
