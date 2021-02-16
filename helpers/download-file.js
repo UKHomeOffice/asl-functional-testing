@@ -27,6 +27,10 @@ const downloadFile = settings => function(fileType) {
     word: {
       selector: 'a*=DOCX',
       type: 'word'
+    },
+    csv: {
+      selector: 'a*=CSV',
+      type: 'csv'
     }
   };
 
@@ -43,7 +47,8 @@ const downloadFile = settings => function(fileType) {
 
   const mimeTypes = {
     pdf: 'application/pdf',
-    word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    csv: 'text/csv; charset=utf-8'
   };
 
   const url = this.$(fileType.selector).getProperty('href');
@@ -68,6 +73,7 @@ const downloadFile = settings => function(fileType) {
           case 'pdf':
             return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
           case 'word':
+          case 'csv':
             return data.toString('utf8');
           default:
             return data;
