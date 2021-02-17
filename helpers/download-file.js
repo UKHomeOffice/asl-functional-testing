@@ -1,8 +1,44 @@
 const assert = require('assert');
 const fetch = require('r2');
 const pdf = require('pdf-parse');
+const csv = require('csv-parse/lib/sync');
 
 const parsePDF = data => pdf(Buffer.from(data, 'binary'));
+const mimeTypes = {
+  pdf: 'application/pdf',
+  word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  csv: 'text/csv; charset=utf-8'
+};
+
+const getFile = function (link, type) {
+  const url = link.getProperty('href');
+  const allCookies = browser.getCookies();
+  const sid = allCookies.find(c => c.name === 'sid').value;
+  const headers = { cookie: `sid=${sid}` };
+  return browser.call(() => {
+    return fetch(url, { headers }).response
+      .then(res => {
+        assert.equal(res.status, 200);
+        assert.equal(res.headers.get('content-type'), mimeTypes[type]);
+        return res.buffer();
+      })
+      .then(data => {
+        switch (type) {
+          case 'pdf':
+            return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
+          case 'word':
+          case 'csv':
+            return csv(data, { columns: true });
+          default:
+            return data;
+        }
+      });
+  });
+};
+
+const download = settings => function(type) {
+  return getFile(this, type);
+};
 
 const downloadFile = settings => function(fileType) {
 
@@ -45,41 +81,14 @@ const downloadFile = settings => function(fileType) {
   // default type to 'pdf'
   fileType.type = fileType.type || 'pdf';
 
-  const mimeTypes = {
-    pdf: 'application/pdf',
-    word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    csv: 'text/csv; charset=utf-8'
-  };
-
-  const url = this.$(fileType.selector).getProperty('href');
+  const link = this.$(fileType.selector);
 
   if (toggleLink.isDisplayed() && toggleLink.getText().includes('Hide')) {
     toggleLink.click();
   }
 
-  const allCookies = this.getCookies();
-  const sid = allCookies.find(c => c.name === 'sid').value;
-  const headers = { cookie: `sid=${sid}` };
+  return getFile(link, fileType.type);
 
-  return this.call(() => {
-    return fetch(url, { headers }).response
-      .then(res => {
-        assert.equal(res.status, 200);
-        assert.equal(res.headers.get('content-type'), mimeTypes[fileType.type]);
-        return res.buffer();
-      })
-      .then(data => {
-        switch (fileType.type) {
-          case 'pdf':
-            return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
-          case 'word':
-          case 'csv':
-            return data.toString('utf8');
-          default:
-            return data;
-        }
-      });
-  });
 };
 
-module.exports = downloadFile;
+module.exports = { download, downloadFile };
