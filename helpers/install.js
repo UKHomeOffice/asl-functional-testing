@@ -1,6 +1,6 @@
 /*global browser*/
 const withUser = require('./with-user');
-const downloadFile = require('./download-file');
+const { download, downloadFile } = require('./download-file');
 const waitForSync = require('./wait-for-sync');
 const waitForSuccess = require('./wait-for-success');
 const selectMany = require('./select-many');
@@ -19,6 +19,7 @@ module.exports = (config) => {
 
   // true as third argument extends element - i.e. `browser.$(selector).completeRichText('words')`
   browser.addCommand('completeRichText', completeRichText(config), true);
+  browser.addCommand('download', download(config), true);
   browser.addCommand('closest', closest(config), true);
 
   // add elaborate implementation of `.click()` to deal with floating elements that might block the click
