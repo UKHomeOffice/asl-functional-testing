@@ -10,6 +10,10 @@ const mimeTypes = {
   csv: 'text/csv; charset=utf-8'
 };
 
+const getType = header => {
+  return Object.keys(mimeTypes).find(key => mimeTypes[key] === header);
+};
+
 const getFile = function (link, type) {
   const url = link.getProperty('href');
   const allCookies = browser.getCookies();
@@ -19,18 +23,22 @@ const getFile = function (link, type) {
     return fetch(url, { headers }).response
       .then(res => {
         assert.equal(res.status, 200);
-        assert.equal(res.headers.get('content-type'), mimeTypes[type]);
+        if (type) {
+          assert.equal(res.headers.get('content-type'), mimeTypes[type]);
+        } else {
+          // if type is not defined then infer it from the response type
+          type = getType(res.headers.get('content-type'));
+        }
         return res.buffer();
       })
       .then(data => {
         switch (type) {
           case 'pdf':
             return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
-          case 'word':
           case 'csv':
             return csv(data, { columns: true });
           default:
-            return data;
+            return data.toString('utf8');
         }
       });
   });
