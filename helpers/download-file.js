@@ -14,8 +14,7 @@ const getType = header => {
   return Object.keys(mimeTypes).find(key => mimeTypes[key] === header);
 };
 
-const getFile = function (link, type) {
-  const url = link.getProperty('href');
+const getFile = function (url, type) {
   const allCookies = browser.getCookies();
   const sid = allCookies.find(c => c.name === 'sid').value;
   const headers = { cookie: `sid=${sid}` };
@@ -45,7 +44,7 @@ const getFile = function (link, type) {
 };
 
 const download = settings => function(type) {
-  return getFile(this, type);
+  return getFile(this.getProperty('href'), type);
 };
 
 const downloadFile = settings => function(fileType) {
@@ -89,13 +88,14 @@ const downloadFile = settings => function(fileType) {
   // default type to 'pdf'
   fileType.type = fileType.type || 'pdf';
 
-  const link = this.$(fileType.selector);
+  // must get href before closing the toggle
+  const url = this.$(fileType.selector).getProperty('href');
 
   if (toggleLink.isDisplayed() && toggleLink.getText().includes('Hide')) {
     toggleLink.click();
   }
 
-  return getFile(link, fileType.type);
+  return getFile(url, fileType.type);
 
 };
 
