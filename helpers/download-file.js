@@ -14,12 +14,22 @@ const getType = header => {
   return Object.keys(mimeTypes).find(key => mimeTypes[key] === header);
 };
 
+const downloadWithRetries = (url, headers, attempt = 0) => {
+  return fetch(url, { headers }).response
+    .then(res => {
+      if (res.status !== 200 && attempt < 3) {
+        return downloadWithRetries(url, headers, attempt + 1);
+      }
+      return res;
+    });
+};
+
 const getFile = function (url, type) {
   const allCookies = browser.getCookies();
   const sid = allCookies.find(c => c.name === 'sid').value;
   const headers = { cookie: `sid=${sid}` };
   return browser.call(() => {
-    return fetch(url, { headers }).response
+    return downloadWithRetries(url, headers)
       .then(res => {
         assert.equal(res.status, 200);
         if (type) {
