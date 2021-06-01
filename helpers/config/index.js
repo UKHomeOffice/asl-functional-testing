@@ -27,6 +27,8 @@ module.exports = settings => {
       'marvellntco': process.env.KEYCLOAK_PASSWORD,
       'trainingadmin': process.env.KEYCLOAK_PASSWORD,
       'trainingntco': process.env.KEYCLOAK_PASSWORD,
+      'collabedit': process.env.KEYCLOAK_PASSWORD,
+      'collabread': process.env.KEYCLOAK_PASSWORD,
       'email-change-before@example.com': process.env.KEYCLOAK_PASSWORD,
       'email-change-after@example.com': process.env.KEYCLOAK_PASSWORD,
       'password-change@example.com': process.env.KEYCLOAK_PASSWORD,
