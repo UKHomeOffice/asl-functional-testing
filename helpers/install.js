@@ -6,6 +6,7 @@ const waitForSuccess = require('./wait-for-success');
 const selectMany = require('./select-many');
 const autocomplete = require('./autocomplete');
 const completeRichText = require('./complete-rich-text');
+const richTextImage = require('./rich-text-image');
 const closest = require('./closest');
 
 module.exports = (config) => {
@@ -19,6 +20,7 @@ module.exports = (config) => {
 
   // true as third argument extends element - i.e. `browser.$(selector).completeRichText('words')`
   browser.addCommand('completeRichText', completeRichText(config), true);
+  browser.addCommand('richTextImage', richTextImage(config), true);
   browser.addCommand('download', download(config), true);
   browser.addCommand('closest', closest(config), true);
 
