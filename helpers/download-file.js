@@ -45,7 +45,7 @@ const getFile = function (url, type) {
           case 'pdf':
             return parsePDF(data).then(pdf => pdf.text.replace(/\s/g, ' '));
           case 'csv':
-            return csv(data, { bom: true, columns: true });
+            return csv(data, { bom: true, columns: true, relax: true });
           default:
             return data.toString('utf8');
         }
