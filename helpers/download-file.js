@@ -91,15 +91,15 @@ const downloadFile = settings => function(fileType) {
     fileType = fileTypeMapping[fileType];
   }
 
-  if (!fileType || !fileType.selector) {
-    throw new Error('selector must be defined');
+  if (!fileType || (!fileType.selector && !fileType.element)) {
+    throw new Error('selector or element must be defined');
   }
 
   // default type to 'pdf'
   fileType.type = fileType.type || 'pdf';
 
   // must get href before closing the toggle
-  const url = this.$(fileType.selector).getProperty('href');
+  const url = fileType.element ? fileType.element.getProperty('href') : this.$(fileType.selector).getProperty('href');
 
   if (toggleLink.isDisplayed() && toggleLink.getText().includes('Hide')) {
     toggleLink.click();
