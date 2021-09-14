@@ -16,6 +16,7 @@ module.exports = settings => {
       'additionalavailability': process.env.KEYCLOAK_PASSWORD,
       'newuser': process.env.KEYCLOAK_PASSWORD,
       'holc': process.env.KEYCLOAK_PASSWORD,
+      'spareholc': process.env.KEYCLOAK_PASSWORD,
       'ntco': process.env.KEYCLOAK_PASSWORD,
       'basicntco': process.env.KEYCLOAK_PASSWORD,
       'read': process.env.KEYCLOAK_PASSWORD,
