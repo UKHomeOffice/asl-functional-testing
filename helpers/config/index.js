@@ -22,6 +22,7 @@ module.exports = settings => {
       'read': process.env.KEYCLOAK_PASSWORD,
       'basic': process.env.KEYCLOAK_PASSWORD,
       'basic2': process.env.KEYCLOAK_PASSWORD,
+      'basic3': process.env.KEYCLOAK_PASSWORD,
       'blocked': process.env.KEYCLOAK_PASSWORD,
       'piltransfer': process.env.KEYCLOAK_PASSWORD,
       'pharmaadmin': process.env.KEYCLOAK_PASSWORD,
@@ -40,7 +41,8 @@ module.exports = settings => {
       'asrusupport': process.env.KEYCLOAK_PASSWORD,
       'asruropper': process.env.KEYCLOAK_PASSWORD,
       'licensing': process.env.KEYCLOAK_PASSWORD,
-      'inspector': process.env.KEYCLOAK_PASSWORD
+      'inspector': process.env.KEYCLOAK_PASSWORD,
+      'inspector2': process.env.KEYCLOAK_PASSWORD
     },
     baseUrl: settings.urls[env],
     ...settings
