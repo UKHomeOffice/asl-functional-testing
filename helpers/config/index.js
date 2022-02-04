@@ -41,7 +41,8 @@ module.exports = settings => {
       'asrusupport': process.env.KEYCLOAK_PASSWORD,
       'asruropper': process.env.KEYCLOAK_PASSWORD,
       'licensing': process.env.KEYCLOAK_PASSWORD,
-      'inspector': process.env.KEYCLOAK_PASSWORD
+      'inspector': process.env.KEYCLOAK_PASSWORD,
+      'inspector2': process.env.KEYCLOAK_PASSWORD
     },
     baseUrl: settings.urls[env],
     ...settings
